@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 import sys
 sys.path.append('../pipeline')
 from conexao import get_engine
-
+from sqlalchemy import create_engine
 # Configuracao da pagina
 st.set_page_config(
     page_title="B3 Analytics",
@@ -13,7 +13,13 @@ st.set_page_config(
     layout="wide"
 )
 
-engine = get_engine()
+import os
+NEON_URL = os.getenv("NEON_URL")
+
+if NEON_URL:
+    engine = create_engine(NEON_URL)
+else:
+    engine = get_engine()
 
 # Cache para nao recarregar o banco a cada interacao
 @st.cache_data
